@@ -1,5 +1,5 @@
-﻿using RPG.Character;
-using System.Text;
+﻿using System.Text;
+using RPG.Character;
 
 namespace RPG.EquipRequirement;
 
@@ -39,6 +39,10 @@ class EquipRequirementsContainer : IEquipRequirement {
     public string GetRequirementFailureMessage(ICharacter character) => _requirementFailureMessage;
 
     public override string ToString() {
-        return base.ToString();
+        StringBuilder stringBuilder = new();
+        foreach (var req in _requirements) {
+            stringBuilder.Append(req.ToString());
+        }
+        return stringBuilder.ToString();
     }
 }

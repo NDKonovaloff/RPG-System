@@ -61,7 +61,7 @@ public class WeaponBuilder {
         }
 
         IEquipRequirement requirements;
-        if (_equipRequirements.Count > 1) {
+        if (_equipRequirements.Count == 1) {
             requirements = _equipRequirements[0];
         }
         else {

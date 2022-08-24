@@ -1,7 +1,9 @@
 ﻿using RPG.Classes;
+using RPG.Damageable;
+using RPG.Weapons;
 
 namespace RPG.Character;
-class Character : ICharacter {
+public class Character : ICharacter, IDamageable {
     public Character(string name, Health health, ManaPool mana, Stats stats, ICharacterClass @class) {
         Name = name;
         Health = health;
@@ -18,7 +20,29 @@ class Character : ICharacter {
 
     public Inventory Inventory => new Inventory();
 
+    public void EquipWeapon(Weapon weapon) {
+        Inventory.EquippedWeapon = weapon;
+    }
+
+    public void Attack(IDamageable target) {
+        if (Inventory.EquippedWeapon is null) {
+            return;
+        }
+
+        var hit = new Hit(
+            target,
+            Inventory.EquippedWeapon.DamageValue
+        );
+
+        target.TakeDamage(hit);
+    }
+
+    public void TakeDamage(Hit hit) {
+        if (Health.IsDead) return;
+        Health.Reduce(hit.TotalDamage);
+    }
+
     public override string ToString() {
-        return $"{Name}, {Class}\n{Health}";
+        return $"{Name}, {Class}";
     }
 }

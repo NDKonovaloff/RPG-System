@@ -17,7 +17,7 @@ var weaponPool = new List<Weapon>() {
         .SetName("Длинный меч")
         .SetWeaponType(WeaponType.Melee)
         .SetDamageValue(5f)
-        .AddEquipRequirement(new StrengthRequirement(5f))
+        .AddEquipRequirement(new StrengthRequirement(10f))
         .BuildAndClear(),
     builder
         .SetName("Короткий меч")
