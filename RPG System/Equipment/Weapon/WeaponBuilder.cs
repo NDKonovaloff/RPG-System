@@ -1,32 +1,23 @@
-﻿using RPG.EquipRequirement;
+﻿using RPG.Damageable;
+using RPG.EquipRequirement;
 
 namespace RPG.Weapons;
 
 public class WeaponBuilder {
     private string? _weaponName = null;
-    private float _damageValue = 1f;
+    private List<IDamage> _damageList = new();
     private WeaponType _weaponType = default;
-    private List<IEquipRequirement> _equipRequirements = new();
+    private List<IEquipRequirement> _requirementList = new();
 
     public WeaponBuilder() { }
-
-    public WeaponBuilder(string weaponName, float damageValue, WeaponType weaponType) {
-        _weaponName = weaponName;
-        _damageValue = damageValue;
-        _weaponType = weaponType;
-    }
 
     public WeaponBuilder SetName(string weaponName) {
         _weaponName = weaponName;
         return this;
     }
 
-    public WeaponBuilder SetDamageValue(float damageValue) {
-        if (damageValue <= 0f) {
-            throw new ArgumentException("Урон оружия должен быть больше 0!");
-        }
-
-        _damageValue = damageValue;
+    public WeaponBuilder AddDamage(IDamage damage) {
+        _damageList.Add(damage);
         return this;
     }
 
@@ -36,15 +27,16 @@ public class WeaponBuilder {
     }
 
     public WeaponBuilder AddEquipRequirement(IEquipRequirement equipRequirement) {
-        _equipRequirements.Add(equipRequirement);
+        _requirementList.Add(equipRequirement);
         return this;
     }
 
     public WeaponBuilder Clear() {
         _weaponName = null;
-        _damageValue = 0;
         _weaponType = default;
-        _equipRequirements.Clear();
+
+        _damageList.Clear();
+        _requirementList.Clear();
 
         return this;
     }
@@ -57,8 +49,9 @@ public class WeaponBuilder {
             throw new ArgumentNullException("Оружию должен быть назначен тип!");
         }
 
-        IEquipRequirement? requirements = ChooseContainer();
-        return new(_weaponName, _damageValue, _weaponType, requirements);
+        var requirements = ChooseRequirementsContainer();
+        var damageContainer = new DamageContainer(_damageList);
+        return new(_weaponName, damageContainer, _weaponType, requirements);
     }
 
     public Weapon BuildAndClear() {
@@ -67,9 +60,9 @@ public class WeaponBuilder {
         return weapon;
     }
 
-    private IEquipRequirement? ChooseContainer() => _equipRequirements.Count switch {
+    private IEquipRequirement? ChooseRequirementsContainer() => _requirementList.Count switch {
         0 => null,
-        1 => _equipRequirements[0],
-        _ => new EquipRequirements(_equipRequirements)
+        1 => _requirementList[0],
+        _ => new EquipRequirements(_requirementList)
     };
 }

@@ -1,18 +1,19 @@
-﻿using RPG.Equipment;
+﻿using RPG.Damageable;
+using RPG.Equipment;
 using RPG.EquipRequirement;
 
 namespace RPG.Weapons;
 
 public class Weapon : IEquipment {
-    public Weapon(string name, float damageValue, WeaponType weaponType, IEquipRequirement? equipRequirement) {
+    public Weapon(string name, DamageContainer damage, WeaponType weaponType, IEquipRequirement? equipRequirement) {
         Name = name;
-        DamageValue = damageValue;
+        Damage = damage;
         WeaponType = weaponType;
         EquipRequirement = new(equipRequirement);
     }
 
     public string Name { get; init; }
-    public float DamageValue { get; init; }
+    public DamageContainer Damage { get; init; }
     public WeaponType WeaponType { get; init; }
     public RequirementContainer EquipRequirement { get; init; }
 

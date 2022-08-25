@@ -1,7 +1,12 @@
 namespace RPG.Damageable;
 
 public readonly struct ResistanceStats {
-    public ResistanceStats(float damageResistance, float slashResistance, float magicResistance, float pierceResistance) {
+    public ResistanceStats(
+        float damageResistance = 1f,
+        float slashResistance = 1f,
+        float magicResistance = 1f,
+        float pierceResistance = 1f
+    ) {
         DamageResistance = damageResistance;
         SlashResistance = slashResistance;
         MagicResistance = magicResistance;

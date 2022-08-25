@@ -18,7 +18,7 @@ public class Character : ICharacter, IDamageable {
     public ManaPool Mana { get; init; }
     public ICharacterClass Class { get; init; }
 
-    public Inventory Inventory => new Inventory();
+    public Inventory Inventory => new();
 
     public void EquipWeapon(Weapon weapon) {
         Inventory.EquippedWeapon = weapon;
@@ -26,7 +26,7 @@ public class Character : ICharacter, IDamageable {
 
     public void Attack(IDamageable target) {
         if (Inventory.EquippedWeapon is null) return;
-        var hit = new Hit(target, Inventory.EquippedWeapon.DamageValue);
+        var hit = new Hit(target, Inventory.EquippedWeapon.Damage);
         target.TakeDamage(hit);
     }
 
@@ -37,5 +37,9 @@ public class Character : ICharacter, IDamageable {
 
     public override string ToString() {
         return $"{Name}, {Class}";
+    }
+
+    public ResistanceStats GetResistance() {
+        return new ResistanceStats();
     }
 }
