@@ -3,6 +3,6 @@
 namespace RPG.EquipRequirement;
 
 public interface IEquipRequirement {
-    string GetRequirementFailureMessage(ICharacter character);
+    string RequirementFailureMessage { get; }
     bool Check(ICharacter target);
 }

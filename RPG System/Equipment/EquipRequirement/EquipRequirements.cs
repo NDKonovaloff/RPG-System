@@ -3,23 +3,18 @@ using RPG.Character;
 
 namespace RPG.EquipRequirement;
 
-class EquipRequirementsContainer : IEquipRequirement {
-    private readonly List<IEquipRequirement> _requirements = new();
-    private string _requirementFailureMessage = "";
-
-    public EquipRequirementsContainer(List<IEquipRequirement> requirements) {
-        _requirements = requirements;
+class EquipRequirements : IEquipRequirement {
+    public EquipRequirements(List<IEquipRequirement> requirements) {
+        _requirements = requirements.ToArray();
     }
-
-    public EquipRequirementsContainer Add(IEquipRequirement requirement) {
-        _requirements.Add(requirement);
-        return this;
-    }
+    
+    private readonly IEquipRequirement[] _requirements;
+    public string RequirementFailureMessage { get; private set; } = "";
 
     public bool Check(ICharacter character) {
         var res = _requirements
             .Where(req => req.Check(character) is false)
-            .Select(req => req.GetRequirementFailureMessage(character));
+            .Select(req => req.RequirementFailureMessage);
 
         if (res.Any()) {
             StringBuilder stringBuilder = new("Персонаж не соответствует требованиям экипировки.");
@@ -28,7 +23,7 @@ class EquipRequirementsContainer : IEquipRequirement {
                 stringBuilder.AppendLine(message);
             }
 
-            _requirementFailureMessage = stringBuilder.ToString();
+            RequirementFailureMessage = stringBuilder.ToString();
 
             return false;
         }
@@ -36,7 +31,6 @@ class EquipRequirementsContainer : IEquipRequirement {
         return true;
     }
 
-    public string GetRequirementFailureMessage(ICharacter character) => _requirementFailureMessage;
 
     public override string ToString() {
         StringBuilder stringBuilder = new();

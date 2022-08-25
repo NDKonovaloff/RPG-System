@@ -56,18 +56,8 @@ public class WeaponBuilder {
         if (_weaponType is default(WeaponType)) {
             throw new ArgumentNullException("Оружию должен быть назначен тип!");
         }
-        if (_equipRequirements.Count < 1) {
-            throw new ArgumentNullException("Оружие должно содержать хотя бы одно ограничение!");
-        }
 
-        IEquipRequirement requirements;
-        if (_equipRequirements.Count == 1) {
-            requirements = _equipRequirements[0];
-        }
-        else {
-            requirements = new EquipRequirementsContainer(_equipRequirements);
-        }
-        
+        IEquipRequirement? requirements = ChooseContainer();
         return new(_weaponName, _damageValue, _weaponType, requirements);
     }
 
@@ -76,4 +66,10 @@ public class WeaponBuilder {
         Clear();
         return weapon;
     }
+
+    private IEquipRequirement? ChooseContainer() => _equipRequirements.Count switch {
+        0 => null,
+        1 => _equipRequirements[0],
+        _ => new EquipRequirements(_equipRequirements)
+    };
 }

@@ -4,5 +4,5 @@ using RPG.EquipRequirement;
 namespace RPG.Armor;
 
 class Armor : IEquipment {
-    public IEquipRequirement EquipRequirement => throw new NotImplementedException();
+    public RequirementContainer EquipRequirement => throw new NotImplementedException();
 }

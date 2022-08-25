@@ -8,13 +8,21 @@ abstract class StatRequirement : IEquipRequirement {
     }
 
     public float RequiredValue { get; init; }
-    public bool Check(ICharacter target) => GetCharacterStatValue(target) >= RequiredValue;
-
     abstract protected string StatName { get; }
+    public string RequirementFailureMessage { get; private set; } = "";
+
     abstract protected float GetCharacterStatValue(ICharacter target);
 
-    public string GetRequirementFailureMessage(ICharacter character) =>
-        $"Необходимо {StatName} {RequiredValue} - текущее значение {GetCharacterStatValue(character)}.";
+    public bool Check(ICharacter character) {
+        bool res = GetCharacterStatValue(character) >= RequiredValue;
+
+        if (!res) {
+            RequirementFailureMessage =
+                $"Необходимо {StatName} {RequiredValue} - текущее значение {GetCharacterStatValue(character)}.";
+        }
+
+        return res;
+    }
 
     public override string ToString() => $"- Необходимо {StatName} {RequiredValue}";
 }
