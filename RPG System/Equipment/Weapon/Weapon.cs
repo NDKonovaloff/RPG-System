@@ -1,8 +1,9 @@
-﻿using RPG.EquipRequirement;
+﻿using RPG.Equipment;
+using RPG.EquipRequirement;
 
 namespace RPG.Weapons;
 
-public class Weapon {
+public class Weapon : IEquipment {
     public Weapon(string name, float damageValue, WeaponType weaponType, IEquipRequirement equipRequirement) {
         Name = name;
         DamageValue = damageValue;

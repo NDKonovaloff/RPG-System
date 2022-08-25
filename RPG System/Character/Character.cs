@@ -25,15 +25,8 @@ public class Character : ICharacter, IDamageable {
     }
 
     public void Attack(IDamageable target) {
-        if (Inventory.EquippedWeapon is null) {
-            return;
-        }
-
-        var hit = new Hit(
-            target,
-            Inventory.EquippedWeapon.DamageValue
-        );
-
+        if (Inventory.EquippedWeapon is null) return;
+        var hit = new Hit(target, Inventory.EquippedWeapon.DamageValue);
         target.TakeDamage(hit);
     }
 
